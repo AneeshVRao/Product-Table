@@ -30,3 +30,5 @@ _agent/
 _agents/
 .gemini/
 temp.json
+skills-lock.json
+APPROACH.md
