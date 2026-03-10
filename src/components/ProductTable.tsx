@@ -118,7 +118,7 @@ export function ProductTable({
         </table>
       </div>
 
-      <div ref={sentinelRef} className="sentinel" aria-hidden="true" />
+      {products.length > 0 && <div ref={sentinelRef} className="sentinel" aria-hidden="true" />}
 
       {loading && products.length > 0 && (
         <div className="loading-container" role="status" aria-busy="true" aria-live="polite">
