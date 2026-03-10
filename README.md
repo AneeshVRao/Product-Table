@@ -14,7 +14,7 @@ A React-based application for viewing and managing product data from a REST API.
 ### Core Implementation
 - **Infinite Scrolling**: Batched data fetching (1 batch = 10 items) using the `IntersectionObserver` API.
 - **Inline Editing**: Custom title editing interface with accessibility support (keyboard navigation and focus management).
-- **Responsive Layout**: CSS Grid and Flexbox system that works across desktop and mobile viewports.
+- **Responsive Layout**: CSS Grid and Flexbox system that works across desktop and mobile viewports. 
 - **Custom Table Engine**: Direct `<table>` implementation without external library dependencies for better performance and smaller bundle size.
 
 ### UI/UX Refinements
