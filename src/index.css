@@ -1,0 +1,72 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  /* Industrial Brutalist Palette */
+  --bg-primary: #e5e5e5;
+  --bg-secondary: #f0f0f0;
+  --bg-card: #ffffff;
+  --bg-row-alt: #ececec;
+  
+  --border: #111111;
+  --border-thick: 3px solid #111111;
+  
+  --text-primary: #111111;
+  --text-secondary: #444444;
+  --text-muted: #666666;
+  
+  /* Safety Accent */
+  --accent: #ff4500;
+  --accent-glow: rgba(255, 69, 0, 0.4);
+  
+  /* Status Colors (muted but stark) */
+  --success: #00aa55;
+  --warning: #cc8800;
+  --danger: #dd2211;
+  
+  /* Sharp UI, no soft corners */
+  --radius: 0px;
+  --radius-sm: 0px;
+  
+  /* Hard offset shadows */
+  --shadow: 4px 4px 0px #111111;
+  --shadow-hover: 6px 6px 0px #111111;
+  --shadow-active: 2px 2px 0px #111111;
+  
+  /* Typography */
+  --font-mono: 'IBM Plex Mono', monospace;
+  --font-display: 'Space Grotesk', sans-serif;
+}
+
+html {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--bg-primary);
+  /* Brutalist background noise */
+  background-image: 
+    radial-gradient(#111111 1px, transparent 1px),
+    radial-gradient(#111111 1px, transparent 1px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+  background-attachment: fixed;
+}
+
+body {
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+/* Base Typography overrides */
+h1, h2, h3, h4, th {
+  font-family: var(--font-display);
+  text-transform: uppercase;
+}

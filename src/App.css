@@ -1,0 +1,643 @@
+/* ─── App Layout ─────────────────────────────────────────────── */
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ─── Header ─────────────────────────────────────────────────── */
+.app-header {
+    background: var(--bg-card);
+    border-bottom: var(--border-thick);
+    padding: 0 2rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    /* Sharp drop shadow separates header from grid background */
+    box-shadow: 0 8px 0px rgba(0, 0, 0, 0.05);
+}
+
+.header-inner {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    height: 80px;
+}
+
+.header-brand {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+}
+
+.brand-icon {
+    width: 48px;
+    height: 48px;
+    background: var(--accent);
+    border: var(--border-thick);
+    display: grid;
+    place-items: center;
+    font-size: 1.6rem;
+    box-shadow: 3px 3px 0 var(--border);
+    transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.brand-icon:hover {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 var(--border);
+}
+
+.header-title {
+    font-size: 1.75rem;
+    font-weight: 700;
+    letter-spacing: -0.04em;
+    color: var(--text-primary);
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+}
+
+.header-subtitle {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    font-weight: 500;
+    font-family: var(--font-mono);
+    margin-top: 0.25rem;
+}
+
+.header-meta {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.meta-chip {
+    background: var(--bg-primary);
+    border: 2px solid var(--border);
+    padding: 0.4rem 1rem;
+    font-size: 0.85rem;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--border);
+}
+
+.meta-chip.accent {
+    background: var(--accent);
+    color: #fff;
+}
+
+/* ─── Main ───────────────────────────────────────────────────── */
+.app-main {
+    flex: 1;
+    max-width: 1400px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 2.5rem 2rem 5rem;
+}
+
+/* ─── Hint Bar ───────────────────────────────────────────────── */
+.hint-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    background: #fff;
+    border: var(--border-thick);
+    padding: 1rem 1.25rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    color: var(--text-primary);
+    box-shadow: var(--shadow);
+}
+
+.hint-icon {
+    font-size: 1.25rem;
+}
+
+.hint-bar strong {
+    background: var(--warning);
+    padding: 0.1rem 0.4rem;
+    color: #000;
+}
+
+/* ─── Table Container ────────────────────────────────────────── */
+.table-container {
+    background: var(--bg-card);
+    border: var(--border-thick);
+    box-shadow: 8px 8px 0 var(--border);
+    position: relative;
+}
+
+/* Brutalist decorative tape corners */
+.table-container::before,
+.table-container::after {
+    content: "";
+    position: absolute;
+    width: 80px;
+    height: 28px;
+    background: var(--warning);
+    transform: rotate(45deg);
+    border: 2px solid var(--border);
+    z-index: 30;
+    pointer-events: none;
+}
+
+.table-container::before {
+    top: -5px;
+    right: -40px;
+}
+
+.table-container::after {
+    bottom: -15px;
+    left: -35px;
+}
+
+.table-scroll {
+    overflow: visible;
+}
+
+/* ─── Table ──────────────────────────────────────────────────── */
+.product-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+/* ─── Table Head ─────────────────────────────────────────────── */
+.product-table thead tr {
+    background: var(--border);
+    color: #fff;
+}
+
+.product-table thead th {
+    padding: 1rem;
+    text-align: left;
+    font-family: var(--font-display);
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    white-space: nowrap;
+    position: sticky;
+    top: 80px;
+    background: var(--border);
+    z-index: 10;
+    border-bottom: var(--border-thick);
+    border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.product-table th:last-child,
+.product-table td:last-child {
+    border-right: none;
+    padding-right: 40px;
+}
+
+/* ─── Table Rows ─────────────────────────────────────────────── */
+.product-table tbody tr {
+    border-bottom: 2px solid var(--border);
+    transition: background 0s;
+    /* Snappy, no transition */
+}
+
+.product-table tbody tr.row-even {
+    background: #fff;
+}
+
+.product-table tbody tr.row-odd {
+    background: var(--bg-secondary);
+}
+
+.product-table tbody tr:hover {
+    background: #ffffaa !important;
+    /* Harsh yellow hover */
+}
+
+/* ─── Cells ──────────────────────────────────────────────────── */
+.product-table td {
+    padding: 0.875rem 1rem;
+    vertical-align: middle;
+    font-size: 0.9rem;
+    border-right: 1px dotted #ccc;
+}
+
+.product-table td:last-child {
+    border-right: none;
+}
+
+.cell-id {
+    font-family: var(--font-mono);
+    font-weight: 600;
+    background: #000;
+    color: #fff;
+    text-align: center;
+    width: 50px;
+}
+
+.cell-thumb {
+    width: 80px;
+}
+
+.product-thumb {
+    width: 56px;
+    height: 56px;
+    object-fit: cover;
+    border: 2px solid var(--border);
+    background: var(--bg-primary);
+    display: block;
+    box-shadow: 2px 2px 0 var(--text-muted);
+    filter: grayscale(20%) contrast(120%);
+}
+
+.product-table tbody tr:hover .product-thumb {
+    filter: grayscale(0%) contrast(100%);
+}
+
+.cell-title {
+    min-width: 240px;
+    font-family: var(--font-display);
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+.cell-brand {
+    font-family: var(--font-mono);
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    font-size: 0.8rem;
+}
+
+.cell-category {
+    min-width: 140px;
+}
+
+.badge {
+    display: inline-block;
+    background: #fff;
+    border: 2px solid var(--border);
+    color: var(--border);
+    padding: 0.25rem 0.5rem;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    box-shadow: 2px 2px 0 var(--border);
+}
+
+.cell-price {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: var(--accent);
+    min-width: 100px;
+}
+
+.cell-rating {
+    min-width: 100px;
+}
+
+.rating-pill {
+    font-family: var(--font-mono);
+    font-size: 0.9rem;
+    font-weight: 700;
+    background: var(--border);
+    color: #fff;
+    padding: 0.2rem 0.5rem;
+    display: inline-flex;
+    gap: 0.25rem;
+    align-items: center;
+}
+
+.rating-pill.high {
+    background: var(--success);
+}
+
+.rating-pill.mid {
+    background: var(--warning);
+    color: #000;
+}
+
+.rating-pill.low {
+    background: var(--danger);
+}
+
+/* ─── Editable Cell ──────────────────────────────────────────── */
+.editable-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.2rem 0;
+}
+
+.editable-text {
+    font-weight: 700;
+    line-height: 1.4;
+    word-break: break-word;
+}
+
+.edit-button {
+    background: var(--bg-card);
+    border: 2px solid var(--border);
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: var(--text-primary);
+    opacity: 0;
+    transition: opacity 0.1s, transform 0.1s;
+    flex-shrink: 0;
+    box-shadow: 2px 2px 0 var(--border);
+}
+
+.editable-container:hover .edit-button,
+.edit-button:focus-visible {
+    opacity: 1;
+}
+
+.edit-button:hover,
+.edit-button:focus-visible {
+    background: var(--accent);
+    color: #fff;
+    transform: translate(-1px, -1px);
+    box-shadow: 3px 3px 0 var(--border);
+    outline: none;
+}
+
+.edit-button:active {
+    transform: translate(1px, 1px);
+    box-shadow: 1px 1px 0 var(--border);
+}
+
+.saved-indicator {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--success);
+    background: var(--bg-card);
+    padding: 0.1rem 0.4rem;
+    border: 1px solid var(--success);
+    margin-left: 0.5rem;
+    animation: fadeOut 2s forwards;
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    70% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+}
+
+.editable-container.editing .editable-input {
+    width: 100%;
+}
+
+.editable-input {
+    width: 100%;
+    min-width: 200px;
+    background: #fff;
+    border: 3px solid var(--accent);
+    padding: 0.4rem 0.6rem;
+    color: var(--text-primary);
+    font-family: var(--font-display);
+    font-size: 1.05rem;
+    font-weight: 700;
+    outline: none;
+    box-shadow: 4px 4px 0 var(--border);
+}
+
+.editable-input:focus {
+    background: #fffdf0;
+}
+
+/* ─── Sentinel ───────────────────────────────────────────────── */
+.sentinel {
+    height: 40px;
+    width: 100%;
+    background: repeating-linear-gradient(45deg,
+            #fff,
+            #fff 10px,
+            #f0f0f0 10px,
+            #f0f0f0 20px);
+    border-top: var(--border-thick);
+}
+
+/* ─── Skeleton Loader ────────────────────────────────────────── */
+.skeleton-pulse {
+    height: 56px;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border);
+    position: relative;
+    overflow: hidden;
+}
+
+.skeleton-pulse::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg,
+            rgba(255, 255, 255, 0) 0,
+            rgba(255, 255, 255, 0.4) 20%,
+            rgba(255, 255, 255, 0.6) 60%,
+            rgba(255, 255, 255, 0));
+    animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* ─── Loading Spinner ────────────────────────────────────────── */
+.loading-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding: 2.5rem;
+    background: var(--bg-card);
+    border-top: var(--border-thick);
+}
+
+/* Brutalist "spinner" is a rotating square */
+.spinner {
+    width: 28px;
+    height: 28px;
+    background: var(--accent);
+    border: 2px solid var(--border);
+    animation: flip 1s infinite steps(2);
+}
+
+@keyframes flip {
+    0% {
+        transform: perspective(100px) rotateY(0);
+    }
+
+    100% {
+        transform: perspective(100px) rotateY(180deg);
+    }
+}
+
+.loading-text {
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--border);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+/* ─── End Message ────────────────────────────────────────────── */
+.end-message {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 2rem;
+    font-family: var(--font-mono);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--border);
+    background: var(--success);
+    border-top: var(--border-thick);
+    text-transform: uppercase;
+}
+
+.end-icon {
+    font-size: 1.25rem;
+}
+
+/* ─── Error Banner ───────────────────────────────────────────── */
+.error-banner {
+    background: var(--danger);
+    border-bottom: var(--border-thick);
+    padding: 1rem 1.5rem;
+    color: #fff;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+/* ─── Empty State ────────────────────────────────────────────── */
+.empty-state {
+    padding: 4rem 2rem;
+    text-align: center;
+    background: var(--bg-card);
+}
+
+.empty-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+}
+
+.empty-state h3 {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.empty-state p {
+    font-family: var(--font-mono);
+    color: var(--text-muted);
+}
+
+/* ─── Sortable Headers ───────────────────────────────────────── */
+.sortable-header {
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.1s;
+}
+
+.sortable-header:hover {
+    background: var(--bg-secondary) !important;
+    color: var(--text-primary) !important;
+    text-decoration: underline;
+}
+
+/* ─── Back to Top FAB ────────────────────────────────────────── */
+.fab-top {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    background: var(--accent);
+    color: #fff;
+    border: 3px solid var(--border);
+    padding: 0.75rem 1rem;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: 1rem;
+    box-shadow: 4px 4px 0 var(--border);
+    cursor: pointer;
+    z-index: 1000;
+    transition: transform 0.1s, box-shadow 0.1s, background 0.1s;
+}
+
+.fab-top:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: 6px 6px 0 var(--border);
+    background: #ff4500;
+}
+
+.fab-top:active {
+    transform: translate(2px, 2px);
+    box-shadow: 2px 2px 0 var(--border);
+}
+
+/* ─── Responsive ─────────────────────────────────────────────── */
+@media (max-width: 768px) {
+    .app-main {
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .header-inner {
+        height: auto;
+        padding: 1rem 0;
+        flex-direction: column;
+        align-items: stretch;
+        justify-content: center;
+    }
+
+    .header-brand {
+        justify-content: center;
+    }
+
+    .header-meta {
+        justify-content: center;
+        margin-top: 1rem;
+    }
+
+    .table-container {
+        box-shadow: 4px 4px 0 var(--border);
+    }
+
+    .fab-top {
+        bottom: 1rem;
+        right: 1rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.85rem;
+    }
+}
