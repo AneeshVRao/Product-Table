@@ -4,7 +4,7 @@ A high-performance, **Brutalist-inspired** React 19 application for browsing and
 
 ## 🚀 Live Links
 
-- **Deployment**: [Live on Vercel](https://product-table-boz0yx0l5-aneeshvrao2017-gmailcoms-projects.vercel.app/)
+- **Deployment**: [Live on Vercel](https://product-table-json.vercel.app/)
 - **Repository**: [GitHub Source](https://github.com/AneeshVRao/Product-Table)
 
 ---
