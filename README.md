@@ -1,73 +1,75 @@
-# ⚡ Product Table (Pro-Max Edition)
+# Product Table
 
-A high-performance, **Brutalist-inspired** React 19 application for browsing and managing product data. This project demonstrates advanced frontend engineering patterns including infinite scrolling with `IntersectionObserver`, custom data hooks, and a robust micro-interaction system.
+A React-based application for viewing and managing product data from a REST API. This project implements a custom infinite scrolling table with inline editing capabilities, built using modern React patterns and a clean industrial aesthetic.
 
-## 🚀 Live Links
+## Deployment and Source
 
-- **Deployment**: [Live on Vercel](https://product-table-json.vercel.app/)
-- **Repository**: [GitHub Source](https://github.com/AneeshVRao/Product-Table)
-
----
-
-## ✨ Features (Standard & Pro-Max)
-
-### Core Requirements
-- 🔄 **Incremental Infinite Scroll**: Fetches products in batches of 10 from `dummyjson.com` using the `IntersectionObserver` API.
-- ✏️ **Inline Title Editing**: Custom edit interaction with pencil-toggle, auto-focus, and keyboard support (`Enter` to save, `Esc` to cancel).
-- 📱 **Responsive Design**: Fully fluid layout that adapts from 4K monitors down to mobile devices.
-- 📦 **Zero Third-Party Table Libraries**: Hand-rolled table logic for maximum performance and control.
-
-### Pro-Max UX Enhancements
-- 🦴 **Skeleton Shimmer Loaders**: Premium loading states for initial data fetch to reduce perceived latency.
-- 📬 **"Saved" Success Toasts**: Instant visual feedback via a fading micro-interaction when a title is modified.
-- 📊 **Client-Side Sorting**: Quick-sort loaded products by **Price** or **Rating** directly in the header.
-- 🔝 **Back to Top (FAB)**: Smooth-scroll floating action button that appears intelligently as you scroll.
-- 🛡️ **Race-Condition Gating**: Advanced logic in the `IntersectionObserver` to prevent double-fetches and offset skips on slow networks.
+- **Live Demo**: [product-table-json.vercel.app](https://product-table-json.vercel.app/)
+- **Repository**: [github.com/AneeshVRao/Product-Table](https://github.com/AneeshVRao/Product-Table)
 
 ---
 
-## 🛠️ Tech Stack
+## Features
 
-- **Core**: React 19 + TypeScript (Vite)
-- **State Management**: React Hooks (`useProducts` custom hook)
-- **Styling**: Vanilla CSS (Brutalist Design System)
-- **Typography**: IBM Plex Mono (Data) & Space Grotesk (Headers)
-- **Icons**: Custom SVG + Lucide-style iconography
-- **Deployment**: Vercel CI/CD
+### Core Implementation
+- **Infinite Scrolling**: Batched data fetching (1 batch = 10 items) using the `IntersectionObserver` API.
+- **Inline Editing**: Custom title editing interface with accessibility support (keyboard navigation and focus management).
+- **Responsive Layout**: CSS Grid and Flexbox system that works across desktop and mobile viewports.
+- **Custom Table Engine**: Direct `<table>` implementation without external library dependencies for better performance and smaller bundle size.
+
+### UI/UX Refinements
+- **Skeleton Loading**: Shimmering placeholder rows displayed during the initial data fetch.
+- **Micro-feedback Toasts**: Temporary success indicators appearing after successful field edits.
+- **Client-Side Sorting**: Interactive headers for sorting loaded data by Price or Rating.
+- **Navigation Utilities**: A floating "Back to Top" button that toggles visibility based on scroll depth.
+- **Request Gating**: Logic to prevent redundant API calls and handle race conditions during rapid scrolling.
 
 ---
 
-## 🏗️ Architecture Overview
+## Tech Stack
+
+- **Framework**: React 19
+- **Tooling**: Vite + TypeScript
+- **Styling**: Vanilla CSS (Custom Design System)
+- **Typography**: IBM Plex Mono & Space Grotesk
+- **Data Source**: DummyJSON API
+- **Deployment**: Vercel
+
+---
+
+## Architecture Overview
 
 ### Data Flow
-The app uses a **unidirectional data flow** managed by a central custom hook:
-`Sentinel Element` → `IntersectionObserver` → `loadMore()` → `useEffect` → `Fetch API` → `React State` → `Optimized Re-render`.
+The application manages state through a centralized custom hook (`useProducts`):
+1. Sentinel element intersection triggers the `loadMore` callback.
+2. The hook updates the `skip` parameter and initiates a fetch request.
+3. New data is appended to the local state, triggering a memoized re-render of the table rows.
 
 ### Directory Structure
 ```
 src/
 ├── types/
-│   └── product.ts        # TypeScript interfaces for API responses
+│   └── product.ts        # TypeScript interfaces for API contracts
 ├── hooks/
-│   └── useProducts.ts    # Centralized fetching logic & pagination state
+│   └── useProducts.ts    # Logic for data fetching, pagination, and state
 ├── components/
-│   ├── ProductTable.tsx  # Optimized table container & observer logic
-│   ├── TableHeader.tsx   # Header component with sorting triggers
-│   ├── TableRow.tsx      # Memoized row component
-│   └── EditableCell.tsx  # Field-level state & edit micro-frontend
-├── App.tsx               # Application entry & layout
-└── App.css               # Brutalist Design System implementation
+│   ├── ProductTable.tsx  # Main table container and observer logic
+│   ├── TableHeader.tsx   # Sortable column headers
+│   ├── TableRow.tsx      # Individual row rendering
+│   └── EditableCell.tsx  # Inline editing state and UI
+├── App.tsx               # Entry component and layout
+└── App.css               # Design system and component styles
 ```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
-- Node.js 18+
+- Node.js (Version 18 or higher)
 - npm or yarn
 
-### Local Installation
+### Installation
 1. **Clone the repository**
    ```bash
    git clone https://github.com/AneeshVRao/Product-Table.git
@@ -83,28 +85,22 @@ src/
    ```bash
    npm run dev
    ```
-   Open [http://localhost:5173](http://localhost:5173) in your browser.
+   The application will be available at [http://localhost:5173](http://localhost:5173).
 
 ---
 
-## 📜 Available Scripts
+## Available Scripts
 
-| Command | Action |
+| Command | Description |
 | :--- | :--- |
-| `npm run dev` | Starts the Vite dev server with Hot Module Replacement (HMR). |
-| `npm run build` | Compiles the project into a production-ready `dist` folder. |
-| `npm run preview` | Spins up a local server to test the production build. |
-| `npm run lint` | Runs ESLint to check for code quality issues. |
+| `npm run dev` | Runs the development server. |
+| `npm run build` | Builds the application for production. |
+| `npm run preview` | Locally previews the production build. |
+| `npm run lint` | Checks the codebase for linting errors. |
 
 ---
 
-## 🛡️ Best Practices Followed
-- **Accessibility (A11y)**: ARIA roles, labels, and focus management for the inline editing flow.
-- **Performance**: Use of `useCallback` and `useMemo` to prevent unnecessary re-renders during infinite scroll updates.
-- **Clean Code**: Modular component architecture with strict TypeScript typing.
-- **Separation of Concerns**: Logic lived in hooks, presentation in components, and patterns in types.
-
----
-
-## 💎 Credits
-This README was enhanced using the [Antigravity Awesome Skills](https://github.com/sickn33/antigravity-awesome-skills) `readme` helper.
+## Technical Standards
+- **Accessibility**: Implements ARIA roles and labels for screen reader support and keyboard-only navigation.
+- **Performance Optimization**: Utilizes `useMemo` and `useCallback` to minimize unnecessary component re-renders.
+- **Clean Code**: Follows a strictly typed TypeScript architecture with clear separation of concerns between logic and presentation.
