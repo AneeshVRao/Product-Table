@@ -36,10 +36,36 @@ If persistence were required later, a callback such as `onSave` could be passed 
 
 ## Challenges & Fixes
 
-| Challenge | How I Fixed It |
-|---|---|
-| **Double-fetch in React StrictMode** | React StrictMode intentionally runs effects twice in development to help detect side effects. This caused duplicate API requests.<br><br>To prevent this, I added a guard condition:<br>`if (loading || skip >= total) return;`<br><br>I also ensured the Intersection Observer disconnects during component cleanup. |
-| **Race condition on initial load** | Before the first API request completed, the observer sometimes triggered another fetch because the placeholder `<div>` was already visible in the viewport.<br><br>**Solution:**<br>The observer element is rendered only when:<br>`products.length > 0`<br><br>This ensures the observer activates only after the initial data load. |
-| **Sticky headers overlapping** | The main application header is a sticky element with a height of 64px. When the table header was made sticky, it overlapped with the main header.<br><br>**Solution:**<br>I added a `top: 64px` offset to the `<th>` elements so the table header stays positioned correctly below the main header. |
-| **Missing brands looked weird** | Some products returned from the API did not include a brand, which resulted in empty table cells.<br><br>**Solution:**<br>A fallback value was added:<br>`product.brand || '—'`<br><br>This keeps the UI consistent and avoids empty cells. |
-| **Editable cells losing value when the parent re-rendered** | Initially, when the parent table component re-rendered, edited titles were reset to their original values.<br><br>**Solution:**<br>The editable cell initializes a local state (`localTitle`) from the prop once, and the component fully manages that value afterwards. This prevents parent re-renders from overwriting user edits. |
+### 1. Double-fetch in React StrictMode
+**Challenge:** React StrictMode intentionally runs effects twice in development to help detect side effects. This caused duplicate API requests.
+
+**How I Fixed It:** To prevent this, I added a guard condition:
+`if (loading || skip >= total) return;`
+
+I also ensured the Intersection Observer disconnects during component cleanup.
+
+### 2. Race condition on initial load
+**Challenge:** Before the first API request completed, the observer sometimes triggered another fetch because the placeholder `<div>` was already visible in the viewport.
+
+**How I Fixed It:** The observer element is rendered only when:
+`products.length > 0`
+
+This ensures the observer activates only after the initial data load.
+
+### 3. Sticky headers overlapping
+**Challenge:** The main application header is a sticky element with a height of 64px. When the table header was made sticky, it overlapped with the main header.
+
+**How I Fixed It:** I added a `top: 64px` offset to the `<th>` elements so the table header stays positioned correctly below the main header.
+
+### 4. Missing brands looked weird
+**Challenge:** Some products returned from the API did not include a brand, which resulted in empty table cells.
+
+**How I Fixed It:** A fallback value was added:
+`product.brand || '—'`
+
+This keeps the UI consistent and avoids empty cells.
+
+### 5. Editable cells losing value when the parent re-rendered
+**Challenge:** Initially, when the parent table component re-rendered, edited titles were reset to their original values.
+
+**How I Fixed It:** The editable cell initializes a local state (`localTitle`) from the prop once, and the component fully manages that value afterwards. This prevents parent re-renders from overwriting user edits.
