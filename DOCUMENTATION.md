@@ -1,38 +1,38 @@
-# Development Approach, Challenges & Solutions
+# How I Built This & Challenges Along the Way
 
-## Approach
+## Overall Approach
 
-The application was built in four incremental phases:
+I built the app in four main steps so I wouldn't get too overwhelmed:
 
-1. **Scaffold** — Vite `react-ts` template, clean folder structure (`types/`, `hooks/`, `components/`).
-2. **Data layer** — A single custom hook (`useProducts`) owns all fetch state: `products`, `loading`, `error`, `skip`, and `total`. Components receive data as props with no prop-drilling beyond one level.
-3. **Table UI** — Plain `<table>` HTML decomposed into `TableHeader`, `TableRow`, and `EditableCell`. No third-party table libraries were used, keeping the bundle small and the rendering logic fully under control.
-4. **Infinite scroll + editing** — An `IntersectionObserver` on a sentinel `<div>` below the last row triggers `loadMore`. `EditableCell` manages its own local edit state independently of the parent.
+1. **Scaffold** — Started with the Vite `react-ts` template. I just set up a clean folder structure with `types/`, `hooks/`, and `components/` so I could find things easily.
+2. **Data layer** — I put all the fetching logic into a single custom hook called `useProducts`. It keeps track of the data, loading state, and pagination (`skip` and `total`). This way, I didn't have to pass props down too many levels—just straight to the components that need it.
+3. **Table UI** — Instead of pulling in a heavy table library, I just used plain HTML `<table>` tags and split the code into `TableHeader`, `TableRow`, and `EditableCell`. It kept the app bundle pretty small and made styling way easier to handle myself.
+4. **Infinite scroll + editing** — For the infinite scroll, I put a dummy `<div>` at the bottom and used an `IntersectionObserver` to detect when it scrolled into view, which triggers the next fetch. For the editing part, each `EditableCell` just handles its own state so it doesn't mess with the rest of the table.
 
 ---
 
 ## Key Technical Decisions
 
-**`IntersectionObserver` over scroll listeners**
-The observer fires off the main thread and requires no debounce logic, making it more performant and simpler to maintain than a `window.scroll` listener.
+**`IntersectionObserver` instead of scroll listeners**
+I initially thought about listening to window scroll events, but that can get laggy and you usually have to write debounce logic. `IntersectionObserver` just works in the background and is way easier to maintain.
 
-**No global state manager (no Redux/Zustand)**
-The state graph is shallow: one hook feeds one table. Adding a store would be over-engineering for this scope.
+**No Redux or Zustand**
+The state is really simple in this app—basically just one hook feeding one table. Adding a whole state management library felt like complete overkill here.
 
-**Native `fetch` over axios**
-`fetch` with `async/await` is sufficient for a single REST endpoint and avoids an unnecessary dependency.
+**Native `fetch` instead of Axios**
+I only needed to hit one single API endpoint, so using standard `fetch` with `async/await` was totally fine. It saved me from adding another dependency I didn't really need.
 
-**`EditableCell` owns its local state**
-Since title changes are not persisted to a server, it makes sense to keep edit state local to the cell component. If persistence were needed, an `onSave` callback prop would be the clean extension point.
+**Letting `EditableCell` manage its own state**
+Since the edits to the titles aren't actually saving to a real backend right now, I just let the cell component hold onto its own edited value. If I eventually wanted to save it to a database, passing an `onSave` prop to the cell would be a pretty straightforward way to handle it.
 
 ---
 
-## Challenges & Solutions
+## Challenges & Fixes
 
-| Challenge | Solution |
+| Challenge | How I Fixed It |
 |---|---|
-| **Double-fetch in React StrictMode** | Added a `loading` guard (`if (loading \|\| skip >= total) return`) and disconnected the observer on cleanup to prevent stale callbacks. |
-| **Race condition on initial load** | The sentinel `<div>` is only rendered after `products.length > 0`, preventing the observer from firing before the first fetch completes. |
-| **Sticky header z-index overlap** | Table `<th>` uses `top: 64px` to sit below the 64px-tall app header; both use `position: sticky`. |
-| **Brand field missing for some products** | Fallback `product.brand \|\| '—'` renders an em-dash instead of a blank cell. |
-| **Editable cell losing value on re-render** | `localTitle` is initialised once from `initialValue` and then fully owned by `EditableCell`'s local state, so parent re-renders do not reset it. |
+| **Double-fetch in React StrictMode** | StrictMode runs effects twice, which was causing duplicate data fetching. I added a quick `loading` check (`if (loading || skip >= total) return`) and made sure to disconnect the observer when the component cleans up. |
+| **Race condition on initial load** | Before the first fetch even finished, the observer would trigger *another* fetch because the dummy `<div>` was already visible. I fixed this by only rendering the `<div>` when `products.length > 0`. |
+| **Sticky header headers overlapping** | The main app header is 64px tall and sticky. When I made the table headers sticky too, they just slid underneath it. I added `top: 64px` to the `<th>` elements so they lock in right below the app header. |
+| **Missing brands looked weird** | Some products didn't have a brand coming from the API, which left empty table cells. I just added a fallback (`product.brand || '—'`) so it shows a nice em-dash instead. |
+| **Editable cells losing value when the parent re-rendered** | Originally, table re-renders were wiping out the user's edits. I fixed it by initializing `localTitle` once from the prop, and then letting the cell fully own that state so parent changes don't overwrite it. |
