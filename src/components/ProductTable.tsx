@@ -1,7 +1,7 @@
-import { useRef, useEffect, useState, useMemo } from 'react';
-import type { Product } from '../types/product';
-import { TableHeader } from './TableHeader';
-import { TableRow } from './TableRow';
+import { useRef, useEffect, useState, useMemo } from "react";
+import type { Product } from "../types/product";
+import { TableHeader } from "./TableHeader";
+import { TableRow } from "./TableRow";
 
 interface ProductTableProps {
   products: Product[];
@@ -20,18 +20,22 @@ export function ProductTable({
 }: ProductTableProps) {
   const sentinelRef = useRef<HTMLDivElement>(null);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [sortConfig, setSortConfig] = useState<{ key: keyof Product; direction: 'asc' | 'desc' } | null>(null);
+  const [sortConfig, setSortConfig] = useState<{
+    key: keyof Product;
+    direction: "asc" | "desc";
+  } | null>(null);
 
   // Sorting Logic
   const sortedProducts = useMemo(() => {
-    const sortableItems = [...products];
+    // eslint-disable-next-line prefer-const
+    let sortableItems = [...products];
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
         const aValue = a[sortConfig.key];
         const bValue = b[sortConfig.key];
-        
-        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
-        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+
+        if (aValue < bValue) return sortConfig.direction === "asc" ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === "asc" ? 1 : -1;
         return 0;
       });
     }
@@ -39,9 +43,13 @@ export function ProductTable({
   }, [products, sortConfig]);
 
   const requestSort = (key: keyof Product) => {
-    let direction: 'asc' | 'desc' = 'asc';
-    if (sortConfig && sortConfig.key === key && sortConfig.direction === 'asc') {
-      direction = 'desc';
+    let direction: "asc" | "desc" = "asc";
+    if (
+      sortConfig &&
+      sortConfig.key === key &&
+      sortConfig.direction === "asc"
+    ) {
+      direction = "desc";
     }
     setSortConfig({ key, direction });
   };
@@ -51,12 +59,12 @@ export function ProductTable({
     const handleScroll = () => {
       setShowScrollTop(window.scrollY > 400);
     };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   useEffect(() => {
@@ -69,7 +77,7 @@ export function ProductTable({
           loadMore();
         }
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     observer.observe(sentinel);
@@ -94,15 +102,15 @@ export function ProductTable({
             {sortedProducts.map((product, index) => (
               <TableRow key={product.id} product={product} index={index} />
             ))}
-            {loading && products.length === 0 && (
+            {loading &&
+              products.length === 0 &&
               Array.from({ length: 10 }).map((_, i) => (
                 <tr key={`skel-${i}`}>
-                  <td colSpan={7} style={{ padding: '0.875rem 1rem' }}>
+                  <td colSpan={7} className="skeleton-cell">
                     <div className="skeleton-pulse" />
                   </td>
                 </tr>
-              ))
-            )}
+              ))}
             {!loading && products.length === 0 && !error && (
               <tr>
                 <td colSpan={7}>
@@ -118,10 +126,17 @@ export function ProductTable({
         </table>
       </div>
 
-      {products.length > 0 && <div ref={sentinelRef} className="sentinel" aria-hidden="true" />}
+      {products.length > 0 && (
+        <div ref={sentinelRef} className="sentinel" aria-hidden="true" />
+      )}
 
       {loading && products.length > 0 && (
-        <div className="loading-container" role="status" aria-busy="true" aria-live="polite">
+        <div
+          className="loading-container"
+          role="status"
+          aria-busy="true"
+          aria-live="polite"
+        >
           <div className="spinner" aria-hidden="true" />
           <span className="loading-text">Loading more…</span>
         </div>
@@ -129,14 +144,16 @@ export function ProductTable({
 
       {!hasMore && !loading && products.length > 0 && (
         <div className="end-message" role="status" aria-live="polite">
-          <span className="end-icon" aria-hidden="true">✓</span>
+          <span className="end-icon" aria-hidden="true">
+            ✓
+          </span>
           All {products.length} products loaded
         </div>
       )}
 
       {showScrollTop && (
-        <button 
-          className="fab-top" 
+        <button
+          className="fab-top"
           onClick={scrollToTop}
           aria-label="Scroll to top"
         >
