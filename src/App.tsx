@@ -28,7 +28,7 @@ function App() {
       <main className="app-main">
         <div className="hint-bar">
           <span className="hint-icon">💡</span>
-          <span><strong>Tip:</strong> Double-click any title to edit it inline. Scroll down to load more products automatically.</span>
+          <span><strong>Tip:</strong> Click the ✏️ icon on any title to edit it inline. Scroll down to load more products automatically.</span>
         </div>
 
         <ProductTable

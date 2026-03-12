@@ -24,7 +24,7 @@ export function ProductTable({
 
   // Sorting Logic
   const sortedProducts = useMemo(() => {
-    let sortableItems = [...products];
+    const sortableItems = [...products];
     if (sortConfig !== null) {
       sortableItems.sort((a, b) => {
         const aValue = a[sortConfig.key];

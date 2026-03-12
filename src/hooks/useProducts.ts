@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import type { Product, ProductsResponse } from '../types/product';
 
 const LIMIT = 10;
@@ -19,17 +19,9 @@ export function useProducts(): UseProductsReturn {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Tracks which skip values have already been fetched to prevent double-fetches
-  // (React StrictMode double-invokes effects in development)
-  const fetchedSkips = useRef<Set<number>>(new Set());
-
   const hasMore = skip < total;
 
   const fetchProducts = useCallback(async (skipValue: number, signal: AbortSignal) => {
-    // Guard: skip this fetch if we already have data for this offset
-    if (fetchedSkips.current.has(skipValue)) return;
-    fetchedSkips.current.add(skipValue);
-
     setLoading(true);
     setError(null);
 
@@ -39,17 +31,18 @@ export function useProducts(): UseProductsReturn {
 
       const data: ProductsResponse = await res.json();
 
+      // Don't update state if this request was aborted between fetch and json parse
+      if (signal.aborted) return;
+
       setProducts(prev => [...prev, ...data.products]);
       setTotal(data.total);
     } catch (err) {
-      if (err instanceof Error && err.name === 'AbortError') {
-        // Cleanup: allow retry if the effect was aborted by StrictMode
-        fetchedSkips.current.delete(skipValue);
-        return;
-      }
+      if (err instanceof Error && err.name === 'AbortError') return;
       setError(err instanceof Error ? err.message : 'Failed to fetch products');
     } finally {
-      setLoading(false);
+      if (!signal.aborted) {
+        setLoading(false);
+      }
     }
   }, []);
 

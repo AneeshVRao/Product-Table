@@ -24,6 +24,7 @@ export function TableHeader({ sortConfig, requestSort }: TableHeaderProps) {
         <th 
           className="sortable-header" 
           onClick={() => requestSort('price')}
+          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && requestSort('price')}
           tabIndex={0}
           role="button"
         >
@@ -32,6 +33,7 @@ export function TableHeader({ sortConfig, requestSort }: TableHeaderProps) {
         <th 
           className="sortable-header" 
           onClick={() => requestSort('rating')}
+          onKeyDown={(e) => (e.key === 'Enter' || e.key === ' ') && requestSort('rating')}
           tabIndex={0}
           role="button"
         >
